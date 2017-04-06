@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from leaflet.admin import LeafletGeoAdmin
 
-from notifications.push.models import PushNotification, DeepLink, CoReceiver, Text, Language, Country
+from notifications.push.models import PushNotification, DeepLink, CoReceiver, Text, Language, Country, \
+    Polygon
 
 
 class TextInline(admin.TabularInline):
@@ -26,3 +28,4 @@ admin.site.register(Language)
 admin.site.register(CoReceiver)
 admin.site.register(PushNotification, PushNotificationAdmin)
 admin.site.register(DeepLink)
+admin.site.register(Polygon, LeafletGeoAdmin)

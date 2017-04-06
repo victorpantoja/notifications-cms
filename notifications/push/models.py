@@ -2,6 +2,15 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from djgeojson.fields import GeoJSONField
+
+
+class Polygon(models.Model):
+    description = models.CharField(max_length=200)
+    geom = GeoJSONField()
+
+    def __str__(self):
+        return self.description
 
 
 class CoReceiver(models.Model):
