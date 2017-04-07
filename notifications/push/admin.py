@@ -23,8 +23,13 @@ class PushNotificationAdmin(admin.ModelAdmin):
         ('Message', {'fields': ['deep_link']}),
     ]
 
+
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'iso_code', 'matches')
+
+
 admin.site.register(Country)
-admin.site.register(Language)
+admin.site.register(Language, LanguageAdmin)
 admin.site.register(CoReceiver)
 admin.site.register(PushNotification, PushNotificationAdmin)
 admin.site.register(DeepLink)

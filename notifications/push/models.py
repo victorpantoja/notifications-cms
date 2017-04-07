@@ -7,7 +7,7 @@ from djgeojson.fields import GeoJSONField
 
 class Polygon(models.Model):
     description = models.CharField(max_length=200)
-    geom = GeoJSONField()
+    geom = GeoJSONField("Geometry")
 
     def __str__(self):
         return self.description
@@ -32,6 +32,9 @@ class DeepLink(models.Model):
 class Language(models.Model):
     iso_code = models.CharField(max_length=2)
     name = models.CharField(max_length=20)
+    matches = models.CharField(max_length=20,
+                               help_text="Comma-separated values of languages "
+                                         "to match")
 
     def __str__(self):
         return "{} ({})".format(self.name, self.iso_code)
@@ -41,14 +44,22 @@ class Country(models.Model):
     iso_code = models.CharField(max_length=2)
     name = models.CharField(max_length=20)
 
+    class Meta:
+        verbose_name_plural = "Countries"
+
     def __str__(self):
         return "{} ({})".format(self.name, self.iso_code)
 
 
+# class ABTest(models.Model):
+#
+#     groups =
+
 class PushNotification(models.Model):
     description = models.CharField(max_length=200)
     date = models.DateTimeField('Push Date',
-                                help_text="Date that this push notification must be sent")
+                                help_text="Date that this push notification "
+                                          "must be sent")
     deep_link = models.ForeignKey(DeepLink)
     co_receivers_only = models.BooleanField(
         "Only co-receivers?",
