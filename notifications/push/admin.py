@@ -5,7 +5,7 @@ from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
 from notifications.push.models import PushNotification, DeepLink, CoReceiver, Text, Language, Country, \
-    Polygon
+    Polygon, Result, MessageConfig
 
 
 class TextInline(admin.TabularInline):
@@ -13,24 +13,37 @@ class TextInline(admin.TabularInline):
 
 
 class PushNotificationAdmin(admin.ModelAdmin):
-    list_display = ('description', 'date')
+    list_display = ('description', 'date', 'ready',)
     inlines = (TextInline,)
     fieldsets = [
         (None, {'fields': ['description', 'date']}),
         ("Filters", {'fields': ['countries', 'last_login']}),
         ('Co Receivers', {'fields': ['co_receivers_only', 'co_receivers']}),
         (None, {'fields': ['ready']}),
-        ('Message', {'fields': ['deep_link']}),
+        ('Message', {'fields': ['message_config', 'deep_link']}),
     ]
+
+    search_fields = ['description']
+    list_filter = ['date']
 
 
 class LanguageAdmin(admin.ModelAdmin):
     list_display = ('name', 'iso_code', 'matches')
 
 
+class ResultAdmin(admin.ModelAdmin):
+    readonly_fields = ('success', 'push', 'fail')
+
+
+class MessageConfigAdmin(admin.ModelAdmin):
+    list_display = ('title', 'icon')
+
+
 admin.site.register(Country)
 admin.site.register(Language, LanguageAdmin)
 admin.site.register(CoReceiver)
+admin.site.register(MessageConfig, MessageConfigAdmin)
 admin.site.register(PushNotification, PushNotificationAdmin)
 admin.site.register(DeepLink)
+admin.site.register(Result, ResultAdmin)
 admin.site.register(Polygon, LeafletGeoAdmin)

@@ -13,6 +13,14 @@ class Polygon(models.Model):
         return self.description
 
 
+class MessageConfig(models.Model):
+    title = models.CharField(max_length=20)
+    icon = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "Title: {}. Icon: {}".format(self.title, self.icon)
+
+
 class CoReceiver(models.Model):
     display_name = models.CharField("Display Name", max_length=20)
     name = models.CharField(max_length=20)
@@ -60,6 +68,10 @@ class PushNotification(models.Model):
     date = models.DateTimeField('Push Date',
                                 help_text="Date that this push notification "
                                           "must be sent")
+
+    message_config = models.ForeignKey(MessageConfig,
+                                       help_text="Defines message's title and icon")
+
     deep_link = models.ForeignKey(DeepLink)
     co_receivers_only = models.BooleanField(
         "Only co-receivers?",
@@ -85,3 +97,9 @@ class Text(models.Model):
     short = models.CharField(max_length=200)
     push = models.ForeignKey(PushNotification)
     language = models.ForeignKey(Language)
+
+
+class Result(models.Model):
+    push = models.ForeignKey(PushNotification)
+    success = models.IntegerField()
+    fail = models.IntegerField()
