@@ -5,7 +5,21 @@ from django.db import models
 from djgeojson.fields import GeoJSONField
 
 
-class Polygon(models.Model):
+class Base(object):
+    def as_json(self):
+        opts = self._meta
+        data = {}
+        for field in opts.concrete_fields + opts.many_to_many:
+            if isinstance(field, models.ManyToManyField):
+                data[field.name] = [obj.as_json() for obj in getattr(self, field.name).all()]
+            elif isinstance(field, models.ForeignKey):
+                data[field.name] = getattr(self, field.name).as_json()
+            else:
+                data[field.name] = field.value_from_object(self)
+        return data
+
+
+class Polygon(models.Model, Base):
     description = models.CharField(max_length=200)
     geom = GeoJSONField("Geometry")
 
@@ -13,7 +27,7 @@ class Polygon(models.Model):
         return self.description
 
 
-class MessageConfig(models.Model):
+class MessageConfig(models.Model, Base):
     title = models.CharField(max_length=20)
     icon = models.CharField(max_length=20)
 
@@ -21,7 +35,7 @@ class MessageConfig(models.Model):
         return "Title: {}. Icon: {}".format(self.title, self.icon)
 
 
-class CoReceiver(models.Model):
+class CoReceiver(models.Model, Base):
     display_name = models.CharField("Display Name", max_length=20)
     name = models.CharField(max_length=20)
 
@@ -29,7 +43,7 @@ class CoReceiver(models.Model):
         return self.display_name
 
 
-class DeepLink(models.Model):
+class DeepLink(models.Model, Base):
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=200)
 
@@ -37,7 +51,7 @@ class DeepLink(models.Model):
         return self.name
 
 
-class Language(models.Model):
+class Language(models.Model, Base):
     iso_code = models.CharField(max_length=2)
     name = models.CharField(max_length=20)
     matches = models.CharField(max_length=20,
@@ -48,7 +62,7 @@ class Language(models.Model):
         return "{} ({})".format(self.name, self.iso_code)
 
 
-class Country(models.Model):
+class Country(models.Model, Base):
     iso_code = models.CharField(max_length=2)
     name = models.CharField(max_length=20)
 
@@ -63,7 +77,7 @@ class Country(models.Model):
 #
 #     groups =
 
-class PushNotification(models.Model):
+class PushNotification(models.Model, Base):
     description = models.CharField(max_length=200)
     date = models.DateTimeField('Push Date',
                                 help_text="Date that this push notification "
@@ -92,14 +106,14 @@ class PushNotification(models.Model):
         return self.description
 
 
-class Text(models.Model):
+class Text(models.Model, Base):
     long_text = models.CharField(max_length=200)
     short = models.CharField(max_length=200)
     push = models.ForeignKey(PushNotification)
     language = models.ForeignKey(Language)
 
 
-class Result(models.Model):
+class Result(models.Model, Base):
     push = models.ForeignKey(PushNotification)
     success = models.IntegerField()
     fail = models.IntegerField()

@@ -1,0 +1,6 @@
+{% extends "admin/change_form.html" %} {% load i18n %}
+{% block object-tools-items %}
+    <li>
+        <a class="historylink" target="_new" href="{% url 'get_push' 1 %}">View config file</a>
+    </li>
+{% endblock %}

@@ -2,3 +2,4 @@ Django
 django-geojson
 jsonfield
 django-leaflet
+ipdb

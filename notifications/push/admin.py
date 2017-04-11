@@ -26,6 +26,13 @@ class PushNotificationAdmin(admin.ModelAdmin):
     search_fields = ['description']
     list_filter = ['date']
 
+    save_as = True
+    #
+    # def save_model(self, request, obj, form, changed):
+    #     if '_continue' in request.POST:
+    #     # add your code here
+    #     return super(ServerAdmin, self).change_view(request, obj, form, changed)
+
 
 class LanguageAdmin(admin.ModelAdmin):
     list_display = ('name', 'iso_code', 'matches')
