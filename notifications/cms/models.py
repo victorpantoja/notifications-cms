@@ -3,4 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
+
+# Create an abstract class for the new manager.
+class ManageAlerts(models.Model):
+    class Meta:
+            proxy = True
