@@ -5,6 +5,3 @@ from django.db import models
 
 
 # Create an abstract class for the new manager.
-class ManageAlerts(models.Model):
-    class Meta:
-            proxy = True

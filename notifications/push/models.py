@@ -36,7 +36,7 @@ class MessageConfig(models.Model, Base):
 
 
 class CoReceiver(models.Model, Base):
-    display_name = models.CharField("Display Name", max_length=20)
+    display_name = models.CharField("Display Name", max_length=20, unique=True)
     name = models.CharField(max_length=20)
 
     def __str__(self):
@@ -44,7 +44,7 @@ class CoReceiver(models.Model, Base):
 
 
 class DeepLink(models.Model, Base):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=200)
 
     def __str__(self):
@@ -52,7 +52,7 @@ class DeepLink(models.Model, Base):
 
 
 class Language(models.Model, Base):
-    iso_code = models.CharField(max_length=2)
+    iso_code = models.CharField(max_length=2, unique=True)
     name = models.CharField(max_length=20)
     matches = models.CharField(max_length=20,
                                help_text="Comma-separated values of languages "
@@ -63,7 +63,7 @@ class Language(models.Model, Base):
 
 
 class Country(models.Model, Base):
-    iso_code = models.CharField(max_length=2)
+    iso_code = models.CharField(max_length=2, unique=True)
     name = models.CharField(max_length=20)
 
     class Meta:
