@@ -17,7 +17,7 @@ class PushNotificationAdmin(admin.ModelAdmin):
     inlines = (TextInline,)
     fieldsets = [
         (None, {'fields': ['description', 'date']}),
-        ("Filters", {'fields': ['countries', 'last_login']}),
+        ("Filters", {'fields': ['countries', 'last_login', 'polygon']}),
         ('Co Receivers', {'fields': ['co_receivers_only', 'co_receivers']}),
         (None, {'fields': ['ready']}),
         ('Message', {'fields': ['message_config', 'deep_link']}),

@@ -87,6 +87,9 @@ class PushNotification(models.Model, Base):
                                        help_text="Defines message's title and icon")
 
     deep_link = models.ForeignKey(DeepLink)
+
+    polygon = models.ForeignKey(Polygon, null=True)
+
     co_receivers_only = models.BooleanField(
         "Only co-receivers?",
         help_text="Check if you want to send only for test users.",
